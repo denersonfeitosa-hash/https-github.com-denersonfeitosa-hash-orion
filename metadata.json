@@ -1,0 +1,6 @@
+{
+  "name": "Órion Eventos e Lazer - Gestão de Aluguel",
+  "description": "Sistema completo para gestão de aluguel de espaços para eventos, com controle de reservas, calendário, contratos digitais, vistorias e financeiro.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

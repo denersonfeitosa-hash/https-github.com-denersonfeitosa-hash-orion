@@ -1,0 +1,116 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // 1. Global Default-Deny Catch-All
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // 2. Reusable Hardened Helpers
+    function isValidId(id) {
+      return id is string && id.size() > 0 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    function existing() {
+      return resource.data;
+    }
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // 3. Entity Validation Helpers
+    function isValidVenueConfig(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 100
+        && data.cnpj is string && data.cnpj.size() <= 30
+        && data.address is string && data.address.size() <= 200
+        && data.city is string && data.city.size() <= 100
+        && data.phone is string && data.phone.size() <= 30
+        && data.pixKey is string && data.pixKey.size() <= 100;
+    }
+
+    function isValidReservation(data) {
+      return data.code is string && data.code.size() > 0 && data.code.size() <= 50
+        && data.clientName is string && data.clientName.size() > 0 && data.clientName.size() <= 150
+        && data.startDate is string && data.startDate.size() >= 8 && data.startDate.size() <= 15
+        && data.totalAmount is number && data.totalAmount >= 0
+        && (data.paymentStatus in ['pendente', 'sinal_pago', 'totalmente_pago'])
+        && (data.reservationStatus in ['orcamento', 'confirmada', 'em_andamento', 'concluida', 'cancelada']);
+    }
+
+    function isValidTransaction(data) {
+      return data.description is string && data.description.size() > 0 && data.description.size() <= 200
+        && (data.type in ['receita', 'despesa'])
+        && data.category is string && data.category.size() <= 60
+        && data.amount is number && data.amount >= 0
+        && data.date is string && data.date.size() >= 8 && data.date.size() <= 15
+        && (data.status in ['pago', 'previsto']);
+    }
+
+    function isValidAdditionalItem(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 100
+        && data.price is number && data.price >= 0
+        && (data.billingType in ['evento', 'hora', 'unidade'])
+        && data.active is bool;
+    }
+
+    function isValidReservationType(data) {
+      return data.name is string && data.name.size() > 0 && data.name.size() <= 100
+        && data.category is string && data.category.size() <= 50
+        && data.defaultPrice is number && data.defaultPrice >= 0
+        && data.active is bool;
+    }
+
+    function isValidInspectionRecord(data) {
+      return data.reservationId is string && data.reservationId.size() <= 128
+        && data.inspectorName is string && data.inspectorName.size() <= 100
+        && data.items is list;
+    }
+
+    // 4. Collection Rule Matchers
+    match /venueConfig/{configId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(configId) && isValidVenueConfig(incoming());
+      allow delete: if false; // System configuration cannot be deleted
+    }
+
+    match /reservations/{reservationId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(reservationId) && isValidReservation(incoming());
+      allow delete: if isValidId(reservationId);
+    }
+
+    match /transactions/{transactionId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(transactionId) && isValidTransaction(incoming());
+      allow delete: if isValidId(transactionId);
+    }
+
+    match /additionalItems/{itemId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(itemId) && isValidAdditionalItem(incoming());
+      allow delete: if isValidId(itemId);
+    }
+
+    match /reservationTypes/{typeId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(typeId) && isValidReservationType(incoming());
+      allow delete: if isValidId(typeId);
+    }
+
+    match /inspectionRecords/{reservationId} {
+      allow get, list: if true;
+      allow create, update: if isValidId(reservationId) && isValidInspectionRecord(incoming());
+      allow delete: if isValidId(reservationId);
+    }
+
+    match /test/{testId} {
+      allow read, write: if isValidId(testId);
+    }
+  }
+}

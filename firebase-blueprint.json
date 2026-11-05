@@ -1,0 +1,531 @@
+{
+  "entities": {
+    "venueConfig": {
+      "title": "Venue Configuration",
+      "description": "General settings, company info, default pricing, and house rules for Orion Eventos e Lazer",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique config document identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Trading name of the venue",
+          "maxLength": 100
+        },
+        "tagline": {
+          "type": "string",
+          "description": "Tagline or slogan of the venue",
+          "maxLength": 150
+        },
+        "cnpj": {
+          "type": "string",
+          "description": "Official company tax identifier (CNPJ)",
+          "maxLength": 30
+        },
+        "legalName": {
+          "type": "string",
+          "description": "Official corporate business name",
+          "maxLength": 150
+        },
+        "address": {
+          "type": "string",
+          "description": "Full street address of the property",
+          "maxLength": 200
+        },
+        "city": {
+          "type": "string",
+          "description": "City and State",
+          "maxLength": 100
+        },
+        "phone": {
+          "type": "string",
+          "description": "Contact phone number",
+          "maxLength": 30
+        },
+        "whatsapp": {
+          "type": "string",
+          "description": "WhatsApp contact number",
+          "maxLength": 30
+        },
+        "email": {
+          "type": "string",
+          "description": "Contact email address",
+          "maxLength": 100
+        },
+        "pixKey": {
+          "type": "string",
+          "description": "Primary PIX key for customer payments",
+          "maxLength": 100
+        },
+        "pixType": {
+          "type": "string",
+          "description": "Type of PIX key",
+          "maxLength": 30
+        },
+        "pixBeneficiary": {
+          "type": "string",
+          "description": "Name of the PIX beneficiary bank account",
+          "maxLength": 100
+        },
+        "logoUrl": {
+          "type": "string",
+          "description": "URL to the company logo image",
+          "maxLength": 500
+        },
+        "maxCapacity": {
+          "type": "number",
+          "description": "Maximum safe guest capacity"
+        },
+        "standardCheckin": {
+          "type": "string",
+          "description": "Standard check-in time",
+          "maxLength": 10
+        },
+        "standardCheckout": {
+          "type": "string",
+          "description": "Standard check-out time",
+          "maxLength": 10
+        },
+        "rules": {
+          "type": "array",
+          "description": "List of house rules"
+        },
+        "defaultPricing": {
+          "type": "object",
+          "description": "Default rental rates and fees"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Last updated timestamp"
+        }
+      },
+      "required": ["name", "cnpj", "address", "city", "phone", "pixKey"]
+    },
+    "reservation": {
+      "title": "Event Reservation",
+      "description": "Booking record for venue rental and event hosting",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier of the reservation",
+          "maxLength": 128
+        },
+        "code": {
+          "type": "string",
+          "description": "Human-readable booking reference code (e.g. ORN-2026-101)",
+          "maxLength": 50
+        },
+        "reservationTypeId": {
+          "type": "string",
+          "description": "Reference ID to reservation type model",
+          "maxLength": 128
+        },
+        "clientName": {
+          "type": "string",
+          "description": "Full name of the client",
+          "maxLength": 150
+        },
+        "clientPhone": {
+          "type": "string",
+          "description": "Client phone number",
+          "maxLength": 30
+        },
+        "clientCpf": {
+          "type": "string",
+          "description": "Client CPF or CNPJ identifier",
+          "maxLength": 30
+        },
+        "clientEmail": {
+          "type": "string",
+          "description": "Client email address",
+          "maxLength": 120
+        },
+        "eventType": {
+          "type": "string",
+          "description": "Category of event being hosted",
+          "maxLength": 100
+        },
+        "startDate": {
+          "type": "string",
+          "description": "Booking start date (YYYY-MM-DD)",
+          "maxLength": 15
+        },
+        "endDate": {
+          "type": "string",
+          "description": "Booking end date (YYYY-MM-DD)",
+          "maxLength": 15
+        },
+        "rentalCategory": {
+          "type": "string",
+          "description": "Category of rental",
+          "maxLength": 50
+        },
+        "checkinTime": {
+          "type": "string",
+          "description": "Check-in time",
+          "maxLength": 15
+        },
+        "checkoutTime": {
+          "type": "string",
+          "description": "Check-out time",
+          "maxLength": 15
+        },
+        "estimatedGuests": {
+          "type": "number",
+          "description": "Estimated guest headcount"
+        },
+        "selectedAreas": {
+          "type": "array",
+          "description": "List of reserved venue area names"
+        },
+        "includedServices": {
+          "type": "array",
+          "description": "List of included services"
+        },
+        "additionalItems": {
+          "type": "array",
+          "description": "Rented additional equipment and items"
+        },
+        "rentalAmount": {
+          "type": "number",
+          "description": "Base space rental fee in BRL"
+        },
+        "cleaningFee": {
+          "type": "number",
+          "description": "Post-event cleaning fee in BRL"
+        },
+        "securityDeposit": {
+          "type": "number",
+          "description": "Damage security deposit amount in BRL"
+        },
+        "discount": {
+          "type": "number",
+          "description": "Discount applied in BRL"
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "Total contract value in BRL"
+        },
+        "advancePaid": {
+          "type": "number",
+          "description": "Advance/deposit amount paid in BRL"
+        },
+        "remainingAmount": {
+          "type": "number",
+          "description": "Remaining balance due at check-in in BRL"
+        },
+        "paymentStatus": {
+          "type": "string",
+          "description": "Current payment state",
+          "enum": ["pendente", "sinal_pago", "totalmente_pago"]
+        },
+        "reservationStatus": {
+          "type": "string",
+          "description": "Lifecycle state of the reservation",
+          "enum": ["orcamento", "confirmada", "em_andamento", "concluida", "cancelada"]
+        },
+        "paymentMethod": {
+          "type": "string",
+          "description": "Agreed payment method",
+          "maxLength": 50
+        },
+        "notes": {
+          "type": "string",
+          "description": "Internal notes and remarks",
+          "maxLength": 1000
+        },
+        "contractSigned": {
+          "type": "boolean",
+          "description": "Whether rental contract is signed"
+        },
+        "contractSignDate": {
+          "type": "string",
+          "description": "Signature date",
+          "maxLength": 20
+        },
+        "inspectionCheckinDone": {
+          "type": "boolean",
+          "description": "Whether check-in inspection was completed"
+        },
+        "inspectionCheckoutDone": {
+          "type": "boolean",
+          "description": "Whether check-out inspection was completed"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Creation timestamp",
+          "maxLength": 30
+        }
+      },
+      "required": ["code", "clientName", "startDate", "totalAmount", "paymentStatus", "reservationStatus"]
+    },
+    "transaction": {
+      "title": "Financial Transaction",
+      "description": "Income or operational expense ledger entry",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique transaction ID",
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "description": "Transaction description",
+          "maxLength": 200
+        },
+        "type": {
+          "type": "string",
+          "description": "Entry type (income or expense)",
+          "enum": ["receita", "despesa"]
+        },
+        "category": {
+          "type": "string",
+          "description": "Accounting category",
+          "maxLength": 60
+        },
+        "amount": {
+          "type": "number",
+          "description": "Monetary value in BRL"
+        },
+        "date": {
+          "type": "string",
+          "description": "Transaction date (YYYY-MM-DD)",
+          "maxLength": 15
+        },
+        "reservationId": {
+          "type": "string",
+          "description": "Linked reservation ID",
+          "maxLength": 128
+        },
+        "reservationCode": {
+          "type": "string",
+          "description": "Linked reservation code",
+          "maxLength": 50
+        },
+        "status": {
+          "type": "string",
+          "description": "Settlement status",
+          "enum": ["pago", "previsto"]
+        }
+      },
+      "required": ["description", "type", "category", "amount", "date", "status"]
+    },
+    "additionalItem": {
+      "title": "Additional Rental Item",
+      "description": "Catalog of add-on equipment, furniture, and services",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique item ID",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Item name",
+          "maxLength": 100
+        },
+        "category": {
+          "type": "string",
+          "description": "Item category",
+          "maxLength": 50
+        },
+        "price": {
+          "type": "number",
+          "description": "Rental price in BRL"
+        },
+        "billingType": {
+          "type": "string",
+          "description": "Billing mode",
+          "enum": ["evento", "hora", "unidade"]
+        },
+        "stock": {
+          "type": "number",
+          "description": "Available stock quantity"
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed description",
+          "maxLength": 500
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Active in rental catalog"
+        }
+      },
+      "required": ["name", "price", "billingType", "active"]
+    },
+    "reservationType": {
+      "title": "Reservation Package Type",
+      "description": "Template packages for single day, weekend, and overnight bookings",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique type ID",
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "description": "Package name",
+          "maxLength": 100
+        },
+        "category": {
+          "type": "string",
+          "description": "Package category",
+          "maxLength": 50
+        },
+        "description": {
+          "type": "string",
+          "description": "Detailed package description",
+          "maxLength": 500
+        },
+        "defaultPrice": {
+          "type": "number",
+          "description": "Base rate in BRL"
+        },
+        "defaultCleaningFee": {
+          "type": "number",
+          "description": "Cleaning fee in BRL"
+        },
+        "defaultSecurityDeposit": {
+          "type": "number",
+          "description": "Security deposit in BRL"
+        },
+        "defaultCheckin": {
+          "type": "string",
+          "description": "Default check-in time",
+          "maxLength": 10
+        },
+        "defaultCheckout": {
+          "type": "string",
+          "description": "Default check-out time",
+          "maxLength": 10
+        },
+        "durationDays": {
+          "type": "number",
+          "description": "Duration in days"
+        },
+        "allowsOvernight": {
+          "type": "boolean",
+          "description": "Allows overnight stay"
+        },
+        "maxGuests": {
+          "type": "number",
+          "description": "Max guest limit"
+        },
+        "colorBadge": {
+          "type": "string",
+          "description": "UI badge color",
+          "maxLength": 30
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Active in booking form"
+        }
+      },
+      "required": ["name", "category", "defaultPrice", "active"]
+    },
+    "inspectionRecord": {
+      "title": "Inspection Record",
+      "description": "Check-in and check-out property condition report",
+      "type": "object",
+      "properties": {
+        "reservationId": {
+          "type": "string",
+          "description": "Linked reservation ID",
+          "maxLength": 128
+        },
+        "checkinDate": {
+          "type": "string",
+          "description": "Check-in date",
+          "maxLength": 20
+        },
+        "checkoutDate": {
+          "type": "string",
+          "description": "Check-out date",
+          "maxLength": 20
+        },
+        "inspectorName": {
+          "type": "string",
+          "description": "Staff inspector name",
+          "maxLength": 100
+        },
+        "clientPresent": {
+          "type": "boolean",
+          "description": "Client or representative was present"
+        },
+        "electricMeterIn": {
+          "type": "string",
+          "description": "Initial energy meter reading",
+          "maxLength": 30
+        },
+        "electricMeterOut": {
+          "type": "string",
+          "description": "Final energy meter reading",
+          "maxLength": 30
+        },
+        "waterMeterIn": {
+          "type": "string",
+          "description": "Initial water meter reading",
+          "maxLength": 30
+        },
+        "waterMeterOut": {
+          "type": "string",
+          "description": "Final water meter reading",
+          "maxLength": 30
+        },
+        "damagesNotes": {
+          "type": "string",
+          "description": "Observed damages notes",
+          "maxLength": 1000
+        },
+        "damageDeductionAmount": {
+          "type": "number",
+          "description": "Amount deducted from deposit in BRL"
+        },
+        "items": {
+          "type": "array",
+          "description": "List of inspected item states"
+        }
+      },
+      "required": ["reservationId", "inspectorName", "items"]
+    }
+  },
+  "firestore": {
+    "/venueConfig/{configId}": {
+      "schema": "venueConfig",
+      "description": "Global company settings and property parameters"
+    },
+    "/reservations/{reservationId}": {
+      "schema": "reservation",
+      "description": "Customer bookings and rental schedules"
+    },
+    "/transactions/{transactionId}": {
+      "schema": "transaction",
+      "description": "Financial income and operational expense ledger entries"
+    },
+    "/additionalItems/{itemId}": {
+      "schema": "additionalItem",
+      "description": "Catalog of additional items and add-on services"
+    },
+    "/reservationTypes/{typeId}": {
+      "schema": "reservationType",
+      "description": "Catalog of reservation packages and rental categories"
+    },
+    "/inspectionRecords/{reservationId}": {
+      "schema": "inspectionRecord",
+      "description": "Check-in and check-out condition reports per reservation"
+    },
+    "/test/{testId}": {
+      "schema": {
+        "$ref": "#/entities/venueConfig"
+      },
+      "description": "Health-check connection validation document"
+    }
+  }
+}
